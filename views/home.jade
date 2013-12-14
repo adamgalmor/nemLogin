@@ -1,0 +1,38 @@
+
+extends layout
+
+block scripts
+	script(type='text/javascript')
+		$(function(){
+			$('form').submit(function(e){
+				e.preventDefault();
+				var str=$('#input').val();
+				$.post("/home", {input: str}, function(data){
+					$('#output').val(data);
+				});
+				return false;
+			});
+		})
+		$(function(){
+			$("#loggout").click(function(e){
+				jQuery.removeCookie("logged");
+			})
+		})
+
+block content
+	script(type='text/javascript')
+		var isLogged = jQuery.cookie("logged");
+		if(!isLogged)
+			window.location.href="http://localhost:3000/login";
+
+	div(class="container")
+		form(method='post' role='form' class='form-signin')
+			h2(class='form-heading') Bubble Sort
+			textarea#input(name='input' type="text" class="form-control" placeholder="Numbers Array" required="" autofocus="")
+			br
+			input(type='submit' class="btn btn-primary btn-lg btn-block") Bubble it!
+			br
+			textarea#output(name='output' type="text" class="form-control" placeholder="Sorted Array")
+			br
+			a(href="/login" id="loggout" class="btn btn-primary btn-lg btn-block") Loggout
+
